@@ -80,4 +80,20 @@ contract NFTMarketplace {
         delete listings[nftAddress][tokenId];
         emit ListingCancelled(nftAddress, tokenId, msg.sender);
     }
+
+    event ListingUpdated(
+        address nftAddress,
+        uint256 tokenId,
+        uint256 newPrice,
+        address seller
+    );
+
+    function updateListing(
+        address nftAddress,
+        uint256 tokenId,
+        uint256 newPrice
+    ) external isListed(nftAddress, tokenId) isNFTOwner(nftAddress, tokenId) validPrice(newPrice) {
+        listings[nftAddress][tokenId].price = newPrice;
+        emit ListingUpdated(nftAddress, tokenId, newPrice, msg.sender);
+    }
 }
