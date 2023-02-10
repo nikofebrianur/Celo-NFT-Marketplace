@@ -92,8 +92,38 @@ contract NFTMarketplace {
         address nftAddress,
         uint256 tokenId,
         uint256 newPrice
-    ) external isListed(nftAddress, tokenId) isNFTOwner(nftAddress, tokenId) validPrice(newPrice) {
+    )
+        external
+        isListed(nftAddress, tokenId)
+        isNFTOwner(nftAddress, tokenId)
+        validPrice(newPrice)
+    {
         listings[nftAddress][tokenId].price = newPrice;
         emit ListingUpdated(nftAddress, tokenId, newPrice, msg.sender);
     }
+
+    event ListingPurchased(
+        address nftAddress,
+        uint256 tokenId,
+        address seller,
+        address buyer
+    );
+
+    function purchaseListing(
+        address nftAddress,
+        uint256 tokenId
+    ) external payable isListed(nftAddress, tokenId) {
+        require(msg.value == listing.price, "MRKT: Incorrect ETH supplied");
+        Listing memory listing = listings[nftAddress][tokenId];
+        delete listings[nftAddress][tokenId];
+        IERC721(nftAddress).safeTransferFrom(
+            listing.seller,
+            msg.sender,
+            tokenId
+        )
+    };
+
+    (bool sent, ) = payable(listing.seller).call{value: msg.value}("");
+    require(sent, "Failed to transfer eth");
+    emit ListingPurchased(nftAddress, tokenId, listing.seller, msg.sender);
 }
