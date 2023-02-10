@@ -70,4 +70,14 @@ contract NFTMarketplace {
         uint256 price,
         address seller
     );
+
+    event ListingCancelled(address nftAddress, uint256 tokenId, address seller);
+
+    function cancelListing(
+        address nftAddress,
+        uint256 tokenId
+    ) external isListed(nftAddress, tokenId) isNFTOwner(nftAddress, tokenId) {
+        delete listings[nftAddress][tokenId];
+        emit ListingCancelled(nftAddress, tokenId, msg.sender);
+    }
 }
