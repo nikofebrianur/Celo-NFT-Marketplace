@@ -47,7 +47,7 @@ contract NFTMarketplace {
     }
 
     modifier validPrice(uint256 _price) {
-        require(price > 0, "MRKT: Price must be > 0");
+        require(_price > 0, "MRKT: Price must be > 0");
         _;
     }
 
@@ -113,17 +113,18 @@ contract NFTMarketplace {
         address nftAddress,
         uint256 tokenId
     ) external payable isListed(nftAddress, tokenId) {
-        require(msg.value == listing.price, "MRKT: Incorrect ETH supplied");
         Listing memory listing = listings[nftAddress][tokenId];
+        require(msg.value == listing.price, "MRKT: Incorrect ETH supplied");
         delete listings[nftAddress][tokenId];
+
         IERC721(nftAddress).safeTransferFrom(
             listing.seller,
             msg.sender,
             tokenId
-        )
-    };
+        );
 
-    (bool sent, ) = payable(listing.seller).call{value: msg.value}("");
-    require(sent, "Failed to transfer eth");
-    emit ListingPurchased(nftAddress, tokenId, listing.seller, msg.sender);
+        (bool sent, ) = payable(listing.seller).call{value: msg.value}("");
+        require(sent, "Failed to transfer eth");
+        emit ListingPurchased(nftAddress, tokenId, listing.seller, msg.sender);
+    }
 }
