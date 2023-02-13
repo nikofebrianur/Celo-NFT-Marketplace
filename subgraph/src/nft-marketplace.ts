@@ -1,5 +1,5 @@
 import {
-  ListingCanceled,
+  ListingCancelled,
   ListingCreated,
   ListingPurchased,
   ListingUpdated,
@@ -25,7 +25,7 @@ export function handleListingCreated(event: ListingCreated): void {
   listing.save();
 }
 
-export function handleListingCanceled(event: ListingCanceled): void {
+export function handleListingCancelled(event: ListingCancelled): void {
   const id =
     event.params.nftAddress.toHex() +
     "-" +
