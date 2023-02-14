@@ -49,7 +49,7 @@ const wagmiClient = createClient({
   provider,
 });
 
-function MyApp({ Component, pageProps}) {
+export default function MyApp({ Component, pageProps}) {
   return (
     <WagmiConfig client={wagmiClient}>
       <RainbowKitProvider chains={chains}>
