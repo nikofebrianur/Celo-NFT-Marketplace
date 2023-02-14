@@ -25,3 +25,26 @@ const celoChain = {
   },
   testnet: true,
 };
+
+const { chains, provider } = configureChains(
+  [celoChain],
+  [
+    jsonRpcProvider({
+      rpc: (chain) => {
+        if (chain.id !== celoChain.id) return null;
+        return { http: chain.rpcUrls.default };
+      },
+    }),
+  ]
+);
+
+const { connectors } = getDefaultWallets({
+  appName: "Celo NFT Marketplace",
+  chains
+});
+
+const wagmiClient = createClient({
+  autoConnect: true,
+  connectors,
+  provider,
+});
