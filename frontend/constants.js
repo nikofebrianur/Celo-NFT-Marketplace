@@ -1,0 +1,1 @@
+export const SUBGRAPH_URL = "https://api.thegraph.com/subgraphs/name/nikofebrianur/celo-nft-marketplace";
