@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import Listing from "../components/Listing";
-
+import { createClient } from "urql";
+import styles from "../styles/Home.module.css";
 import Link from "next/link";
+import { SUBGRAPH_URL } from "../constants";
 import { useAccount } from "wagmi";
-import { SUBGRAPH_URL } from "@/constants";
 
 export default function Home() {
   const [listings, setListings] = useState();
@@ -72,7 +73,7 @@ export default function Home() {
           })}
       </div>
 
-      {!loading && !listings && listings.length === 0 && (
+      {!loading && listings && listings.length === 0 && (
         <span>No listings found</span>
       )}
     </>
