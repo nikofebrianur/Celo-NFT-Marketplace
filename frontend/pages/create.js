@@ -101,10 +101,16 @@ export default function Create() {
             }
           }}
         />
-
+        
         <button onClick={handleCreateListing} disabled={loading}>
           {loading ? "Loading..." : "Create"}
         </button>
+
+        {showListingLink && (
+          <Link href={`/nft/${nftAddress}/${tokenId}`}>
+            <button>View Listing</button>
+          </Link>
+        )}
       </div>
     </>
   );
