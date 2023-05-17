@@ -40,7 +40,7 @@ const { chains, provider } = configureChains(
 
 const { connectors } = getDefaultWallets({
   appName: "Celo NFT Marketplace",
-  chains
+  chains,
 });
 
 const wagmiClient = createClient({
@@ -49,7 +49,7 @@ const wagmiClient = createClient({
   provider,
 });
 
-export default function MyApp({ Component, pageProps}) {
+function MyApp({ Component, pageProps }) {
   return (
     <WagmiConfig client={wagmiClient}>
       <RainbowKitProvider chains={chains}>
@@ -58,3 +58,5 @@ export default function MyApp({ Component, pageProps}) {
     </WagmiConfig>
   );
 }
+
+export default MyApp
